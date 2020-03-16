@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7957D2E241EFAE9001B2769 /* ObservableStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7957D2D241EFAE9001B2769 /* ObservableStore.swift */; };
+		E7957D30241EFB49001B2769 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7957D2F241EFB49001B2769 /* AppState.swift */; };
 		E7D5616423F710C200B90F46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5616323F710C200B90F46 /* AppDelegate.swift */; };
 		E7D5616623F710C200B90F46 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5616523F710C200B90F46 /* SceneDelegate.swift */; };
 		E7D5616823F710C200B90F46 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5616723F710C200B90F46 /* ContentView.swift */; };
@@ -47,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E7957D2D241EFAE9001B2769 /* ObservableStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableStore.swift; sourceTree = "<group>"; };
+		E7957D2F241EFB49001B2769 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E7D5616023F710C200B90F46 /* OptimusPrime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OptimusPrime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D5616323F710C200B90F46 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7D5616523F710C200B90F46 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,13 +133,14 @@
 				E7D5619323F742D300B90F46 /* Shared */,
 				E7D5616323F710C200B90F46 /* AppDelegate.swift */,
 				E7D5616523F710C200B90F46 /* SceneDelegate.swift */,
+				E7957D2F241EFB49001B2769 /* AppState.swift */,
 				E7D5616723F710C200B90F46 /* ContentView.swift */,
+				E7D561A023F7431200B90F46 /* WolframAlpha.swift */,
+				E7D561AB23F7486F00B90F46 /* Configuration.swift */,
 				E7D5616923F710C300B90F46 /* Assets.xcassets */,
 				E7D5616E23F710C300B90F46 /* LaunchScreen.storyboard */,
 				E7D5617123F710C300B90F46 /* Info.plist */,
 				E7D5616B23F710C300B90F46 /* Preview Content */,
-				E7D561A023F7431200B90F46 /* WolframAlpha.swift */,
-				E7D561AB23F7486F00B90F46 /* Configuration.swift */,
 			);
 			path = OptimusPrime;
 			sourceTree = "<group>";
@@ -175,6 +180,7 @@
 				E7D5619723F742D300B90F46 /* Result+Debugging.swift */,
 				E7D5619823F742D300B90F46 /* Bundle+Querying.swift */,
 				E7D5619923F742D300B90F46 /* JsonConversion.swift */,
+				E7957D2D241EFAE9001B2769 /* ObservableStore.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -324,7 +330,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D5619D23F742D300B90F46 /* Result+Debugging.swift in Sources */,
+				E7957D2E241EFAE9001B2769 /* ObservableStore.swift in Sources */,
 				E7D5619E23F742D300B90F46 /* Bundle+Querying.swift in Sources */,
+				E7957D30241EFB49001B2769 /* AppState.swift in Sources */,
 				E7D5616423F710C200B90F46 /* AppDelegate.swift in Sources */,
 				E7D5619F23F742D300B90F46 /* JsonConversion.swift in Sources */,
 				E7D5619A23F742D300B90F46 /* DataTransport.swift in Sources */,

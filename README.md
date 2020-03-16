@@ -1,6 +1,6 @@
 # OptimusPrime
 
-State Management excerises based on the [PointFree](https://www.pointfree.co) video series on the subject.
+State Management / Composable Architecture excerise app based on the [PointFree](https://www.pointfree.co) video series on the subject.
 
 ## Setup
 
