@@ -103,11 +103,11 @@ struct PrimeModalView: View {
             if isPrime(self.store.value.count) {
                 Text("\(self.store.value.count) is prime!")
                 if self.store.value.favoritePrimes.contains(self.store.value.count) {
-                    Button(action: { self.store.send(.favoritePrime(.remove)) }) {
+                    Button(action: { self.store.send(.isPrimeModel(.remove)) }) {
                         Text("Remove from favorite primes")
                     }
                 } else {
-                    Button(action: { self.store.send(.favoritePrime(.add)) }) {
+                    Button(action: { self.store.send(.isPrimeModel(.add)) }) {
                         Text("Save to favorite primes")
                     }
                 }
@@ -141,7 +141,7 @@ struct FavoritePrimesView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: ObservableStore(initialValue: AppState(), reducer: appActionReducer))
+        ContentView(store: ObservableStore(initialValue: AppState(), reducer: appReducer))
     }
 }
 

@@ -16,6 +16,7 @@ struct AppState {
 
 enum AppAction {
     case counter(CounterAction)
+    case isPrimeModel(IsPrimeAction)
     case favoritePrime(FavoritePrimeAction)
 }
 
@@ -24,24 +25,53 @@ enum CounterAction {
     case decrement
 }
 
-enum FavoritePrimeAction {
-    case add
-    case remove
-    case removeFrom(IndexSet)
-}
-
-func appActionReducer(state: inout AppState, action: AppAction) {
+func counterReducer(state: inout AppState, action: AppAction) {
     switch action {
     case .counter(.increment): state.count += 1
     case .counter(.decrement): state.count -= 1
-        
-    case .favoritePrime(.add):
+    default: break
+    }
+
+}
+
+enum IsPrimeAction {
+    case add
+    case remove
+}
+
+func isPrimeModelReducer(state: inout AppState, action: AppAction) {
+    switch action {
+    case .isPrimeModel(.add):
         state.favoritePrimes.append(state.count)
-    case .favoritePrime(.remove):
+    case .isPrimeModel(.remove):
         state.favoritePrimes.removeAll(where: { $0 == state.count })
+    default: break
+    }
+
+}
+
+enum FavoritePrimeAction {
+    case removeFrom(IndexSet)
+}
+
+func favoritePrimeReducer(state: inout AppState, action: AppAction) {
+    switch action {
     case .favoritePrime(.removeFrom(let indexSet)):
         for index in indexSet {
             state.favoritePrimes.remove(at: index)
         }
+    default: break
     }
 }
+
+func combine(_ reducers: (inout AppState, AppAction) -> Void...) -> (inout AppState, AppAction) -> Void {
+    return { state, action in
+        reducers.forEach { reducer in
+            reducer(&state, action)
+        }
+    }
+}
+
+let appReducer = combine(counterReducer,
+                         isPrimeModelReducer,
+                         favoritePrimeReducer)
