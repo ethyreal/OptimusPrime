@@ -11,16 +11,16 @@ import Combine
 
 final class ObservableStore<Value, Action>: ObservableObject {
     
-    let reducer: (Value, Action) -> Value
+    let reducer: (inout Value, Action) -> Void
     
     @Published var value: Value
     
-    init(initialValue: Value, reducer: @escaping (Value, Action) -> Value) {
+    init(initialValue: Value, reducer: @escaping (inout Value, Action) -> Void) {
         self.value = initialValue
         self.reducer = reducer
     }
     
     func send(_ action: Action) {
-        self.value = reducer(value, action)
+        reducer(&value, action)
     }
 }

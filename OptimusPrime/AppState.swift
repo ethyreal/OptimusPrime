@@ -20,11 +20,9 @@ enum CounterAction {
     case decrement
 }
 
-func counterReducer(state: AppState, action: CounterAction) -> AppState {
-    var localState = state
+func counterReducer(state: inout AppState, action: CounterAction) {
     switch action {
-    case .increment: localState.count += 1
-    case .decrement: localState.count -= 1
+    case .increment: state.count += 1
+    case .decrement: state.count -= 1
     }
-    return localState
 }
