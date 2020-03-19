@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @ObservedObject var store: ObservableStore<AppState>
+    @ObservedObject var store: ObservableStore<AppState, CounterAction>
     
     var body: some View {
         NavigationView {
@@ -39,7 +39,7 @@ struct PrimeAlert: Identifiable {
 
 struct CounterView: View {
     
-    @ObservedObject var store: ObservableStore<AppState>
+    @ObservedObject var store: ObservableStore<AppState, CounterAction>
 
     @State var shouldShowPrimeModal: Bool = false
     @State var alertNthPrime: PrimeAlert?
@@ -49,11 +49,11 @@ struct CounterView: View {
         
         VStack {
             HStack {
-                Button(action: { self.store.value.count -= 1}) {
+                Button(action: { self.store.send(.decrement) }) {
                     Text("-")
                 }
                 Text("\(self.store.value.count)")
-                Button(action: { self.store.value.count += 1}) {
+                Button(action: { self.store.send(.increment) }) {
                     Text("+")
                 }
             }
@@ -96,7 +96,7 @@ private func isPrime(_ num: Int) -> Bool {
 
 struct PrimeModalView: View {
     
-    @ObservedObject var store: ObservableStore<AppState>
+    @ObservedObject var store: ObservableStore<AppState, CounterAction>
     
     var body: some View {
         VStack {
@@ -125,7 +125,7 @@ struct PrimeModalView: View {
 //MARK:-
 
 struct FavoritePrimesView: View {
-    @ObservedObject var store: ObservableStore<AppState>
+    @ObservedObject var store: ObservableStore<AppState, CounterAction>
     
     var body: some View {
         List {
@@ -145,7 +145,7 @@ struct FavoritePrimesView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: ObservableStore(initialValue: AppState()))
+        ContentView(store: ObservableStore(initialValue: AppState(), reducer: counterReducer))
     }
 }
 

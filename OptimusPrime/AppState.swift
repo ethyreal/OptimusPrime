@@ -14,3 +14,17 @@ struct AppState {
     var favoritePrimes: [Int] = []
 }
 
+
+enum CounterAction {
+    case increment
+    case decrement
+}
+
+func counterReducer(state: AppState, action: CounterAction) -> AppState {
+    var localState = state
+    switch action {
+    case .increment: localState.count += 1
+    case .decrement: localState.count -= 1
+    }
+    return localState
+}

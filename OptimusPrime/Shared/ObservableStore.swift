@@ -9,11 +9,18 @@
 import Foundation
 import Combine
 
-final class ObservableStore<T>: ObservableObject {
+final class ObservableStore<Value, Action>: ObservableObject {
     
-    @Published var value: T
+    let reducer: (Value, Action) -> Value
     
-    init(initialValue: T) {
+    @Published var value: Value
+    
+    init(initialValue: Value, reducer: @escaping (Value, Action) -> Value) {
         self.value = initialValue
+        self.reducer = reducer
+    }
+    
+    func send(_ action: Action) {
+        self.value = reducer(value, action)
     }
 }
