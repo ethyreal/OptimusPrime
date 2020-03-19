@@ -14,15 +14,34 @@ struct AppState {
     var favoritePrimes: [Int] = []
 }
 
+enum AppAction {
+    case counter(CounterAction)
+    case favoritePrime(FavoritePrimeAction)
+}
 
 enum CounterAction {
     case increment
     case decrement
 }
 
-func counterReducer(state: inout AppState, action: CounterAction) {
+enum FavoritePrimeAction {
+    case add
+    case remove
+    case removeFrom(IndexSet)
+}
+
+func appActionReducer(state: inout AppState, action: AppAction) {
     switch action {
-    case .increment: state.count += 1
-    case .decrement: state.count -= 1
+    case .counter(.increment): state.count += 1
+    case .counter(.decrement): state.count -= 1
+        
+    case .favoritePrime(.add):
+        state.favoritePrimes.append(state.count)
+    case .favoritePrime(.remove):
+        state.favoritePrimes.removeAll(where: { $0 == state.count })
+    case .favoritePrime(.removeFrom(let indexSet)):
+        for index in indexSet {
+            state.favoritePrimes.remove(at: index)
+        }
     }
 }
