@@ -11,8 +11,15 @@ import Foundation
 struct AppState {
 
     var count: Int = 0
-    var favoritePrimes: [Int] = []
+    var favoritePrimes = FavoritePrimes()
+    
+    struct FavoritePrimes {
+        var items: [Int] = []
+        
+        var count: Int { items.count }
+    }
 }
+
 
 enum AppAction {
     case counter(CounterAction)
@@ -25,10 +32,10 @@ enum CounterAction {
     case decrement
 }
 
-func counterReducer(state: inout AppState, action: AppAction) {
+func counterReducer(state: inout Int, action: AppAction) {
     switch action {
-    case .counter(.increment): state.count += 1
-    case .counter(.decrement): state.count -= 1
+    case .counter(.increment): state += 1
+    case .counter(.decrement): state -= 1
     default: break
     }
 
@@ -42,9 +49,10 @@ enum IsPrimeAction {
 func isPrimeModelReducer(state: inout AppState, action: AppAction) {
     switch action {
     case .isPrimeModel(.add):
-        state.favoritePrimes.append(state.count)
+        state.favoritePrimes.items.append(state.count)
     case .isPrimeModel(.remove):
-        state.favoritePrimes.removeAll(where: { $0 == state.count })
+        let last = state.count
+        state.favoritePrimes.items.removeAll(where: { $0 == state.count })
     default: break
     }
 
@@ -54,11 +62,11 @@ enum FavoritePrimeAction {
     case removeFrom(IndexSet)
 }
 
-func favoritePrimeReducer(state: inout AppState, action: AppAction) {
+func favoritePrimeReducer(state: inout AppState.FavoritePrimes, action: AppAction) {
     switch action {
     case .favoritePrime(.removeFrom(let indexSet)):
         for index in indexSet {
-            state.favoritePrimes.remove(at: index)
+            state.items.remove(at: index)
         }
     default: break
     }
@@ -72,6 +80,14 @@ func combine(_ reducers: (inout AppState, AppAction) -> Void...) -> (inout AppSt
     }
 }
 
-let appReducer = combine(counterReducer,
+func pullback<LocalValue, GlobalValue, Action>(_ reducer: @escaping (inout LocalValue, Action) -> Void, valuePath: WritableKeyPath<GlobalValue, LocalValue>) -> (inout GlobalValue, Action) -> Void {
+    return { globalValue, action in
+        reducer(&globalValue[keyPath: valuePath], action)
+    }
+}
+
+let appReducer = combine(pullback(counterReducer, valuePath: \.count),
                          isPrimeModelReducer,
-                         favoritePrimeReducer)
+                         pullback(favoritePrimeReducer, valuePath: \.favoritePrimes))
+
+
