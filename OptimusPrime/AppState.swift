@@ -23,8 +23,23 @@ struct AppState {
 
 enum AppAction {
     case counter(CounterAction)
-    case isPrimeModel(IsPrimeAction)
+    case isPrimeModal(IsPrimeAction)
     case favoritePrime(FavoritePrimeAction)
+    
+    var counter: CounterAction? {
+        guard case let .counter(value) = self else { return nil }
+        return value
+    }
+    
+    var isPrimeModal: IsPrimeAction? {
+        guard case let .isPrimeModal(value) = self else { return nil }
+        return value
+    }
+    
+    var favoritePrimes: FavoritePrimeAction? {
+        guard case let .favoritePrime(value) = self else { return nil }
+        return value
+    }
 }
 
 enum CounterAction {
@@ -32,11 +47,10 @@ enum CounterAction {
     case decrement
 }
 
-func counterReducer(state: inout Int, action: AppAction) {
+func counterReducer(state: inout Int, action: CounterAction) {
     switch action {
-    case .counter(.increment): state += 1
-    case .counter(.decrement): state -= 1
-    default: break
+    case .increment: state += 1
+    case .decrement: state -= 1
     }
 
 }
@@ -48,10 +62,9 @@ enum IsPrimeAction {
 
 func isPrimeModelReducer(state: inout AppState, action: AppAction) {
     switch action {
-    case .isPrimeModel(.add):
+    case .isPrimeModal(.add):
         state.favoritePrimes.items.append(state.count)
-    case .isPrimeModel(.remove):
-        let last = state.count
+    case .isPrimeModal(.remove):
         state.favoritePrimes.items.removeAll(where: { $0 == state.count })
     default: break
     }
@@ -62,13 +75,12 @@ enum FavoritePrimeAction {
     case removeFrom(IndexSet)
 }
 
-func favoritePrimeReducer(state: inout AppState.FavoritePrimes, action: AppAction) {
+func favoritePrimeReducer(state: inout AppState.FavoritePrimes, action: FavoritePrimeAction) {
     switch action {
-    case .favoritePrime(.removeFrom(let indexSet)):
+    case .removeFrom(let indexSet):
         for index in indexSet {
             state.items.remove(at: index)
         }
-    default: break
     }
 }
 
@@ -80,14 +92,18 @@ func combine(_ reducers: (inout AppState, AppAction) -> Void...) -> (inout AppSt
     }
 }
 
-func pullback<LocalValue, GlobalValue, Action>(_ reducer: @escaping (inout LocalValue, Action) -> Void, valuePath: WritableKeyPath<GlobalValue, LocalValue>) -> (inout GlobalValue, Action) -> Void {
-    return { globalValue, action in
-        reducer(&globalValue[keyPath: valuePath], action)
+func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @escaping (inout LocalValue, LocalAction) -> Void,
+                                                                  valuePath: WritableKeyPath<GlobalValue, LocalValue>,
+                                                                  actionPath: KeyPath<GlobalAction, LocalAction?>) -> (inout GlobalValue, GlobalAction) -> Void {
+    return { globalValue, globalAction in
+        guard let localAction = globalAction[keyPath: actionPath] else { return }
+        reducer(&globalValue[keyPath: valuePath], localAction)
     }
 }
 
-let appReducer = combine(pullback(counterReducer, valuePath: \.count),
+
+let appReducer = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
                          isPrimeModelReducer,
-                         pullback(favoritePrimeReducer, valuePath: \.favoritePrimes))
+                         pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes))
 
 

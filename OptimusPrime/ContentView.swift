@@ -103,11 +103,11 @@ struct PrimeModalView: View {
             if isPrime(self.store.value.count) {
                 Text("\(self.store.value.count) is prime!")
                 if self.store.value.favoritePrimes.items.contains(self.store.value.count) {
-                    Button(action: { self.store.send(.isPrimeModel(.remove)) }) {
+                    Button(action: { self.store.send(.isPrimeModal(.remove)) }) {
                         Text("Remove from favorite primes")
                     }
                 } else {
-                    Button(action: { self.store.send(.isPrimeModel(.add)) }) {
+                    Button(action: { self.store.send(.isPrimeModal(.add)) }) {
                         Text("Save to favorite primes")
                     }
                 }
