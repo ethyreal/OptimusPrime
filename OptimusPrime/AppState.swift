@@ -60,11 +60,11 @@ enum IsPrimeAction {
     case remove
 }
 
-func isPrimeModelReducer(state: inout AppState, action: AppAction) {
+func isPrimeModelReducer(state: inout AppState, action: IsPrimeAction) {
     switch action {
-    case .isPrimeModal(.add):
+    case .add:
         state.favoritePrimes.items.append(state.count)
-    case .isPrimeModal(.remove):
+    case .remove:
         state.favoritePrimes.items.removeAll(where: { $0 == state.count })
     default: break
     }
@@ -103,7 +103,7 @@ func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @es
 
 
 let appReducer = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
-                         isPrimeModelReducer,
+                         pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
                          pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes))
 
 
