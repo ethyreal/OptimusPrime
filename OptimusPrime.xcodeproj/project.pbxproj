@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7790E022427CBBA006DFFF4 /* ForwardApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7790E012427CBBA006DFFF4 /* ForwardApplication.swift */; };
 		E7957D2E241EFAE9001B2769 /* ObservableStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7957D2D241EFAE9001B2769 /* ObservableStore.swift */; };
 		E7957D30241EFB49001B2769 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7957D2F241EFB49001B2769 /* AppState.swift */; };
 		E7D5616423F710C200B90F46 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5616323F710C200B90F46 /* AppDelegate.swift */; };
@@ -49,6 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E7790E012427CBBA006DFFF4 /* ForwardApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardApplication.swift; sourceTree = "<group>"; };
 		E7957D2D241EFAE9001B2769 /* ObservableStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableStore.swift; sourceTree = "<group>"; };
 		E7957D2F241EFB49001B2769 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		E7D5616023F710C200B90F46 /* OptimusPrime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OptimusPrime.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +183,7 @@
 				E7D5619823F742D300B90F46 /* Bundle+Querying.swift */,
 				E7D5619923F742D300B90F46 /* JsonConversion.swift */,
 				E7957D2D241EFAE9001B2769 /* ObservableStore.swift */,
+				E7790E012427CBBA006DFFF4 /* ForwardApplication.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				E7D5619D23F742D300B90F46 /* Result+Debugging.swift in Sources */,
 				E7957D2E241EFAE9001B2769 /* ObservableStore.swift in Sources */,
 				E7D5619E23F742D300B90F46 /* Bundle+Querying.swift in Sources */,
+				E7790E022427CBBA006DFFF4 /* ForwardApplication.swift in Sources */,
 				E7957D30241EFB49001B2769 /* AppState.swift in Sources */,
 				E7D5616423F710C200B90F46 /* AppDelegate.swift in Sources */,
 				E7D5619F23F742D300B90F46 /* JsonConversion.swift in Sources */,

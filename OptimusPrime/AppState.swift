@@ -104,7 +104,7 @@ func favoritePrimeReducer(state: inout [Int], action: FavoritePrimeAction) {
     }
 }
 
-func logActivityReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
+func activityFeedReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
     
     return { state, action in
         
@@ -120,6 +120,18 @@ func logActivityReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void
             }
         }
         reducer(&state, action)
+    }
+}
+
+func loggingReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
+    return { state, action in
+        reducer(&state, action)
+        print("---")
+        print("Action: \(action)")
+        print("State:")
+        dump(state)
+        print("---")
+
     }
 }
 
@@ -141,11 +153,13 @@ func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @es
 }
 
 
-let appReducer = logActivityReducer(
-                        combine(
-                            pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
-                            pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
-                            pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes)))
+let userActionsReducer: (inout AppState, AppAction) -> Void = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
+                                 pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
+                                 pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes))
 
+//let appReducer = loggingReducer(activityFeedReducer(userActionsReducer))
+let appReducer = userActionsReducer
+                    |> activityFeedReducer
+                    |> loggingReducer
 
 
