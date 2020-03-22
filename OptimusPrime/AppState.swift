@@ -11,12 +11,34 @@ import Foundation
 struct AppState {
 
     var count: Int = 0
-    var favoritePrimes = FavoritePrimes()
+    var favoritePrimes: [Int] = []
     
-    struct FavoritePrimes {
-        var items: [Int] = []
+    var user: User? = nil
+    
+    var activityFeed: [Activity] = []
+    
+    struct User {
+        let id: Int
+        let name: String
+        let bio: String
+    }
+    
+    struct Activity {
+        let timestamp: Date
+        let activityType: ActivityType
         
-        var count: Int { items.count }
+        enum ActivityType {
+            case addedFavoritePrime(Int)
+            case removedFavoritePrime(Int)
+        }
+    }
+    
+}
+
+extension AppState.Activity {
+    init(of type: ActivityType) {
+        self.timestamp = Date()
+        self.activityType = type
     }
 }
 
@@ -63,24 +85,41 @@ enum IsPrimeAction {
 func isPrimeModelReducer(state: inout AppState, action: IsPrimeAction) {
     switch action {
     case .add:
-        state.favoritePrimes.items.append(state.count)
+        state.favoritePrimes.append(state.count)
     case .remove:
-        state.favoritePrimes.items.removeAll(where: { $0 == state.count })
-    default: break
+        state.favoritePrimes.removeAll(where: { $0 == state.count })
     }
-
 }
 
 enum FavoritePrimeAction {
     case removeFrom(IndexSet)
 }
 
-func favoritePrimeReducer(state: inout AppState.FavoritePrimes, action: FavoritePrimeAction) {
+func favoritePrimeReducer(state: inout [Int], action: FavoritePrimeAction) {
     switch action {
     case .removeFrom(let indexSet):
         for index in indexSet {
-            state.items.remove(at: index)
+            state.remove(at: index)
         }
+    }
+}
+
+func logActivityReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
+    
+    return { state, action in
+        
+        switch action {
+        case .counter: break
+        case .isPrimeModal(.remove):
+            state.activityFeed.append(.init(of: .removedFavoritePrime(state.count)))
+        case .isPrimeModal(.add):
+            state.activityFeed.append(.init(of: .addedFavoritePrime(state.count)))
+        case .favoritePrime(.removeFrom(let indexSet)):
+            for index in indexSet {
+                state.activityFeed.append(.init(of: .removedFavoritePrime(index)))
+            }
+        }
+        reducer(&state, action)
     }
 }
 
@@ -102,8 +141,11 @@ func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @es
 }
 
 
-let appReducer = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
-                         pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
-                         pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes))
+let appReducer = logActivityReducer(
+                        combine(
+                            pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
+                            pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
+                            pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes)))
+
 
 

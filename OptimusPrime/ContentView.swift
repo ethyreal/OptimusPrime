@@ -102,7 +102,7 @@ struct PrimeModalView: View {
         VStack {
             if isPrime(self.store.value.count) {
                 Text("\(self.store.value.count) is prime!")
-                if self.store.value.favoritePrimes.items.contains(self.store.value.count) {
+                if self.store.value.favoritePrimes.contains(self.store.value.count) {
                     Button(action: { self.store.send(.isPrimeModal(.remove)) }) {
                         Text("Remove from favorite primes")
                     }
@@ -129,7 +129,7 @@ struct FavoritePrimesView: View {
     
     var body: some View {
         List {
-            ForEach(self.store.value.favoritePrimes.items, id: \.self) { prime in
+            ForEach(self.store.value.favoritePrimes, id: \.self) { prime in
                 Text("\(prime)")
             }
             .onDelete { self.store.send(.favoritePrime(.removeFrom($0))) }
