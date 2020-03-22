@@ -24,3 +24,21 @@ final class ObservableStore<Value, Action>: ObservableObject {
         reducer(&value, action)
     }
 }
+
+
+func combine<State, Action>(_ reducers: (inout State, Action) -> Void...) -> (inout State, Action) -> Void {
+    return { state, action in
+        reducers.forEach { reducer in
+            reducer(&state, action)
+        }
+    }
+}
+
+func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @escaping (inout LocalValue, LocalAction) -> Void,
+                                                                  valuePath: WritableKeyPath<GlobalValue, LocalValue>,
+                                                                  actionPath: KeyPath<GlobalAction, LocalAction?>) -> (inout GlobalValue, GlobalAction) -> Void {
+    return { globalValue, globalAction in
+        guard let localAction = globalAction[keyPath: actionPath] else { return }
+        reducer(&globalValue[keyPath: valuePath], localAction)
+    }
+}

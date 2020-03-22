@@ -135,23 +135,6 @@ func loggingReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) ->
     }
 }
 
-func combine(_ reducers: (inout AppState, AppAction) -> Void...) -> (inout AppState, AppAction) -> Void {
-    return { state, action in
-        reducers.forEach { reducer in
-            reducer(&state, action)
-        }
-    }
-}
-
-func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @escaping (inout LocalValue, LocalAction) -> Void,
-                                                                  valuePath: WritableKeyPath<GlobalValue, LocalValue>,
-                                                                  actionPath: KeyPath<GlobalAction, LocalAction?>) -> (inout GlobalValue, GlobalAction) -> Void {
-    return { globalValue, globalAction in
-        guard let localAction = globalAction[keyPath: actionPath] else { return }
-        reducer(&globalValue[keyPath: valuePath], localAction)
-    }
-}
-
 
 let userActionsReducer: (inout AppState, AppAction) -> Void = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
                                  pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
