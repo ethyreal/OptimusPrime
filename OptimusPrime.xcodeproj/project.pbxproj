@@ -16,7 +16,7 @@
 		E7D5616A23F710C300B90F46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7D5616923F710C300B90F46 /* Assets.xcassets */; };
 		E7D5616D23F710C300B90F46 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7D5616C23F710C300B90F46 /* Preview Assets.xcassets */; };
 		E7D5617023F710C300B90F46 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7D5616E23F710C300B90F46 /* LaunchScreen.storyboard */; };
-		E7D5617B23F710C300B90F46 /* OptimusPrimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5617A23F710C300B90F46 /* OptimusPrimeTests.swift */; };
+		E7D5617B23F710C300B90F46 /* InoutConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5617A23F710C300B90F46 /* InoutConversionTests.swift */; };
 		E7D5618623F710C300B90F46 /* OptimusPrimeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5618523F710C300B90F46 /* OptimusPrimeUITests.swift */; };
 		E7D5619A23F742D300B90F46 /* DataTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5619423F742D300B90F46 /* DataTransport.swift */; };
 		E7D5619C23F742D300B90F46 /* URLRequest+Headers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D5619623F742D300B90F46 /* URLRequest+Headers.swift */; };
@@ -62,7 +62,7 @@
 		E7D5616F23F710C300B90F46 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E7D5617123F710C300B90F46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7D5617623F710C300B90F46 /* OptimusPrimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OptimusPrimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7D5617A23F710C300B90F46 /* OptimusPrimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimusPrimeTests.swift; sourceTree = "<group>"; };
+		E7D5617A23F710C300B90F46 /* InoutConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InoutConversionTests.swift; sourceTree = "<group>"; };
 		E7D5617C23F710C300B90F46 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7D5618123F710C300B90F46 /* OptimusPrimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OptimusPrimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D5618523F710C300B90F46 /* OptimusPrimeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimusPrimeUITests.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 		E7D5617923F710C300B90F46 /* OptimusPrimeTests */ = {
 			isa = PBXGroup;
 			children = (
-				E7D5617A23F710C300B90F46 /* OptimusPrimeTests.swift */,
+				E7D5617A23F710C300B90F46 /* InoutConversionTests.swift */,
 				E7D5617C23F710C300B90F46 /* Info.plist */,
 				E7D561AD23F7509000B90F46 /* ConfigurationTests.swift */,
 			);
@@ -353,7 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7D561AE23F7509000B90F46 /* ConfigurationTests.swift in Sources */,
-				E7D5617B23F710C300B90F46 /* OptimusPrimeTests.swift in Sources */,
+				E7D5617B23F710C300B90F46 /* InoutConversionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
