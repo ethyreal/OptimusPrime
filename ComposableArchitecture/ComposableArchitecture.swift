@@ -1,32 +1,32 @@
 //
-//  ObservableStore.swift
-//  OptimusPrime
+//  ComposableArchitecture.swift
+//  ComposableArchitecture
 //
-//  Created by George Webster on 3/16/20.
+//  Created by George Webster on 4/2/20.
 //  Copyright © 2020 George Webster. All rights reserved.
 //
 
 import Foundation
 import Combine
 
-final class ObservableStore<Value, Action>: ObservableObject {
+public final class ObservableStore<Value, Action>: ObservableObject {
     
-    let reducer: (inout Value, Action) -> Void
+    private let reducer: (inout Value, Action) -> Void
     
-    @Published var value: Value
+    @Published public private(set) var value: Value
     
-    init(initialValue: Value, reducer: @escaping (inout Value, Action) -> Void) {
+    public init(initialValue: Value, reducer: @escaping (inout Value, Action) -> Void) {
         self.value = initialValue
         self.reducer = reducer
     }
     
-    func send(_ action: Action) {
+    public func send(_ action: Action) {
         reducer(&value, action)
     }
 }
 
 
-func combine<State, Action>(_ reducers: (inout State, Action) -> Void...) -> (inout State, Action) -> Void {
+public func combine<State, Action>(_ reducers: (inout State, Action) -> Void...) -> (inout State, Action) -> Void {
     return { state, action in
         reducers.forEach { reducer in
             reducer(&state, action)
@@ -34,7 +34,7 @@ func combine<State, Action>(_ reducers: (inout State, Action) -> Void...) -> (in
     }
 }
 
-func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @escaping (inout LocalValue, LocalAction) -> Void,
+public func pullback<LocalValue, GlobalValue, LocalAction, GlobalAction>(_ reducer: @escaping (inout LocalValue, LocalAction) -> Void,
                                                                   valuePath: WritableKeyPath<GlobalValue, LocalValue>,
                                                                   actionPath: KeyPath<GlobalAction, LocalAction?>) -> (inout GlobalValue, GlobalAction) -> Void {
     return { globalValue, globalAction in

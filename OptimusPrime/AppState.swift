@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import ComposableArchitecture
+import Counter
+import PrimeModal
+import FavoritePrimes
 
 struct AppState {
 
@@ -42,6 +46,21 @@ extension AppState.Activity {
     }
 }
 
+extension AppState {
+    
+    var primeModelState: PrimeModalState {
+        get {
+            PrimeModalState(
+                count: count,
+                favorites: favoritePrimes)
+        }
+        set {
+            count = newValue.count
+            favoritePrimes = newValue.favoritePrimes
+        }
+    }
+}
+
 
 enum AppAction {
     case counter(CounterAction)
@@ -64,45 +83,6 @@ enum AppAction {
     }
 }
 
-enum CounterAction {
-    case increment
-    case decrement
-}
-
-func counterReducer(state: inout Int, action: CounterAction) {
-    switch action {
-    case .increment: state += 1
-    case .decrement: state -= 1
-    }
-
-}
-
-enum IsPrimeAction {
-    case add
-    case remove
-}
-
-func isPrimeModelReducer(state: inout AppState, action: IsPrimeAction) {
-    switch action {
-    case .add:
-        state.favoritePrimes.append(state.count)
-    case .remove:
-        state.favoritePrimes.removeAll(where: { $0 == state.count })
-    }
-}
-
-enum FavoritePrimeAction {
-    case removeFrom(IndexSet)
-}
-
-func favoritePrimeReducer(state: inout [Int], action: FavoritePrimeAction) {
-    switch action {
-    case .removeFrom(let indexSet):
-        for index in indexSet {
-            state.remove(at: index)
-        }
-    }
-}
 
 func activityFeedReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
     
@@ -137,7 +117,7 @@ func loggingReducer(_ reducer: @escaping (inout AppState, AppAction) -> Void) ->
 
 
 let userActionsReducer: (inout AppState, AppAction) -> Void = combine(pullback(counterReducer, valuePath: \.count, actionPath: \.counter),
-                                 pullback(isPrimeModelReducer, valuePath: \.self, actionPath: \.isPrimeModal),
+                                 pullback(isPrimeModelReducer, valuePath: \.primeModelState, actionPath: \.isPrimeModal),
                                  pullback(favoritePrimeReducer, valuePath: \.favoritePrimes, actionPath: \.favoritePrimes))
 
 //let appReducer = loggingReducer(activityFeedReducer(userActionsReducer))
